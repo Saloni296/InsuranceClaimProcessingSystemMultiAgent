@@ -6,7 +6,7 @@ Performs initial schema validation, data cleansing, and quality checks
 from typing import Any, Dict, List
 from datetime import datetime
 import logging
-import llm_agent
+from agents.llm_agent import llm_agent
 
 logger = logging.getLogger(__name__)
 
