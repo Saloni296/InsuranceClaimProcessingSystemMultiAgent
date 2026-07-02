@@ -6,7 +6,7 @@ Generates approval/denial recommendations, applies coverage limits, and formats 
 from typing import Any, Dict, List
 from datetime import datetime
 import logging
-import llm_agent
+from agents import llm_agent
 
 logger = logging.getLogger(__name__)
 
