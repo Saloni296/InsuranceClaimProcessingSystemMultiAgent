@@ -14,6 +14,10 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+ROOT_DIR = Path(__file__).resolve().parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 # Import agents
 from agents.bronze_agent import BronzeAgent
 from agents.silver_agent import SilverAgent
@@ -249,10 +253,19 @@ def main():
         'system_health': health_report
     }
     
+    # Ensure reports directory exists and save a timestamped report there too
+    reports_dir = Path(__file__).parent / 'reports'
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
+    report_path = reports_dir / f"report-{timestamp}.json"
+
     with open(output_file, 'w') as f:
         json.dump(results_summary, f, indent=2, default=str)
-    
-    print(f"\n[OK] Results saved to {output_file.name}")
+
+    with open(report_path, 'w', encoding='utf-8') as f:
+        json.dump(results_summary, f, indent=2, default=str)
+
+    print(f"\n[OK] Results saved to {output_file.name} and {report_path}")
     print_section_header("EXECUTION COMPLETE", "=")
 
 
