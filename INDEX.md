@@ -21,10 +21,12 @@ You now have a **production-ready multi-agent insurance claim processing system*
 ### 🤖 Agent Implementations
 | File | Lines | Purpose |
 |------|-------|---------|
-| bronze_agent.py | 160 | Data validation & cleansing |
-| silver_agent.py | 280 | Enrichment & fraud detection |
-| gold_agent.py | 370 | Decisions & payment processing |
-| orchestrator_agent.py | 280 | Pipeline coordination |
+| bronze_agent.py | 160 | Validation, attach OCR & LLM summary |
+| silver_agent.py | 280 | Policy check (LLM) & Enrichment |
+| gold_agent.py | 370 | Completeness (LLM), Decisions & Payment |
+| orchestrator_agent.py | 280 | Pipeline coordination & OCR pre-stage |
+| ocr_agent.py | 80 | OCR extraction from uploads |
+| llm_agent.py | 120 | LLM wrappers: summarize, policy check, follow-ups |
 | supervisor_agent.py | 450 | System oversight & monitoring |
 
 ### 📖 Documentation
@@ -36,11 +38,13 @@ You now have a **production-ready multi-agent insurance claim processing system*
 | USE_CASE.md | Business context | Domain knowledge |
 | EXECUTION_SUMMARY.md | Test results | Proof of work |
 | INDEX.md | This file | Navigation |
+| ARCHITECTURE.md | Detailed diagrams & flows | Implementation planning |
 
 ### 💾 Data & Output
 | File | Purpose |
 |------|---------|
 | sample_claims.json | 4 test claims (valid, invalid, OON, high-value) |
+| sample_claims_genai.json | GenAI demo claim with uploads |
 | main.py | Execution engine & demo |
 | processing_results.json | Generated output with audit trails |
 | requirements.txt | Dependencies (empty - pure Python) |
@@ -96,7 +100,7 @@ You now have a **production-ready multi-agent insurance claim processing system*
 
 ### Step 1: Navigate to Directory
 ```bash
-cd "c:\Users\saloni6\Desktop\Insurance_UseCase"
+cd "c:\Users\saloni6\Desktop\InsuranceClaimProcessingSystemMultiAgent"
 ```
 
 ### Step 2: Run System
@@ -371,8 +375,11 @@ System is working correctly when:
 ✓ silver_agent.py            (Enrichment)
 ✓ gold_agent.py              (Decisions)
 ✓ orchestrator_agent.py      (Coordination)
+✓ ocr_agent.py               (OCR extraction)
+✓ llm_agent.py               (LLM wrappers)
 ✓ supervisor_agent.py        (Oversight)
 ✓ sample_claims.json         (Test data)
+✓ sample_claims_genai.json   (GenAI demo claim)
 ✓ processing_results.json    (Output)
 ✓ requirements.txt           (Dependencies)
 ✓ README.md                  (Full docs)

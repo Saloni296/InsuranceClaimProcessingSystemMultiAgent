@@ -15,124 +15,160 @@ This is a comprehensive multi-agent architecture for processing health insurance
 ┌──────────────────────┴──────────────────────────────────────┐
 │               ORCHESTRATOR AGENT                            │
 │    (Coordinates Pipeline, Batch Processing)                │
-└──────────────┬──────────────────────────┬──────────────────┘
-               │                          │
-        ┌──────▼────────┐         ┌──────▼─────────┐
-        │ BRONZE AGENT  │────────▶│ SILVER AGENT  │──────┐
-        │               │         │                │      │
-        │ Validation    │         │ Enrichment     │      │
-        │ Cleansing     │         │ Quality Check  │      │
-        │ Schema Check  │         │ Fraud Detection│      │
-        └───────────────┘         └────────────────┘      │
-                                                           │
-                                                    ┌──────▼─────────┐
-                                                    │  GOLD AGENT    │
-                                                    │                │
-                                                    │ Final Logic    │
-                                                    │ Coverage Apply │
-                                                    │ Decision Making│
-                                                    └────────────────┘
+└──────────────┬──────────────┬───────────────┬───────────────┘
+               │              │               │
+        ┌──────▼─────┐   ┌────▼─────┐   ┌─────▼─────┐
+        │  INGEST    │   │   OCR    │   │   LLM     │
+        │  (Upload)  │──▶│ Agent    │──▶│ (Summarize│
+        │  Uploads   │   │ Extract) │   │  & Analyze)│
+        └────────────┘   └──────────┘   └────────────┘
+               │                             │
+               └───────────┬─────────────────┘
+                           │
+                    ┌──────▼────────┐
+                    │  BRONZE AGENT │
+                    │ Validation &   │
+                    │ Attach OCR+LLM  │
+                    └──────┬─────────┘
+                           │
+                    ┌──────▼────────┐
+                    │  SILVER AGENT │
+                    │ Policy check  │
+                    │ Enrichment/QA  │
+                    └──────┬─────────┘
+                           │
+                    ┌──────▼────────┐
+                    │  GOLD AGENT   │
+                    │ Completeness  │
+                    │ Follow-ups &  │
+                    │ Final Decision│
+                    └───────────────┘
 ```
 
 ## Agent Responsibilities
 
-### 1. Bronze Agent - Data Ingestion & Validation
-- **Purpose**: Initial validation and cleansing of raw claim data
-- **Responsibilities**:
-  - Schema validation (required fields check)
-  - Data type conversion and validation
-  - Date format validation
-  - Remove duplicates and clean formatting
-  - Calculate initial data quality score
-  
-**Output**: Validated, clean claim data with quality metrics
+### 0. Ingest / Upload (Customer)
+- **Purpose**: Entry point for customers submitting claims and supporting documents
+- **Inputs**: Photos (damage, injuries), Invoices, Signed claim forms, Optional notes
+- **Output**: Raw claim package with list of uploaded files and metadata
 
-### 2. Silver Agent - Data Enrichment & Quality Assurance
-- **Purpose**: Enrich data with business context and detect anomalies
+### OCR Agent
+- **Purpose**: Extract structured text from uploaded documents (photos, PDFs)
 - **Responsibilities**:
-  - Policy verification
-  - Provider network validation
-  - Service code verification
-  - Fraud pattern detection
-  - Age-based eligibility checks
-  - Apply business rules
-  - Calculate eligible reimbursement amounts
-  
-**Output**: Enriched claim data with fraud scores and business rule results
+  - Run OCR on images and PDFs
+  - Produce cleaned text snippets per file
+  - Normalize dates, amounts, provider names when possible
+  - Attach OCR outputs to the claim payload for downstream consumption
 
-### 3. Gold Agent - Final Processing & Business Logic
-- **Purpose**: Generate final decisions and prepare for payment
-- **Responsibilities**:
-  - Apply coverage limits by service category
-  - Calculate patient financial responsibility
-  - Generate approval/denial recommendations
-  - Create payment instructions
-  - Generate compliance audit trail
-  - Format output for downstream systems
-  
-**Output**: Final decision with payment details and approval/denial status
+**Output**: ocr_texts: { filename: extracted_text }
 
-### 4. Orchestrator Agent - Pipeline Coordination
-- **Purpose**: Coordinate the entire processing pipeline
+### LLM Agent (Shared)
+- **Purpose**: Provide GenAI capabilities used by Bronze/Silver/Gold tiers
 - **Responsibilities**:
-  - Route claims through Bronze → Silver → Gold sequence
-  - Handle stage failures and error propagation
-  - Process individual claims and batches
-  - Collect and aggregate metrics
-  - Provide pipeline status and performance data
-  
-**Output**: Processed claims with complete decision information
+  - Summarize incident from OCR outputs
+  - Compare summarized claim against policy documents
+  - Identify missing documents and generate follow-up questions
+  - Return structured responses suitable for programmatic decisions
+
+**Output**: incident_summary, policy_check, completeness_assessment
+
+### 1. Bronze Agent - Ingestion, Validation & Summarization
+- **Purpose**: Initial validation + attach OCR and LLM-generated summary
+- **Responsibilities**:
+  - Validate required fields and data types
+  - Calculate data quality score and flag basic issues
+  - Attach OCR outputs (if present) to the cleaned record
+  - Call LLM summarizer with OCR texts to produce incident_summary
+
+**Output**: Validated claim with incident_summary and data quality metrics
+
+### 2. Silver Agent - Policy Coverage Check & Enrichment
+- **Purpose**: Enrich claim with policy context and detect anomalies
+- **Responsibilities**:
+  - Verify policy existence and fetch policy text
+  - Use LLM to compare incident_summary against policy text to assess coverage
+  - Perform provider network checks and fraud pattern detection
+  - Calculate eligible amounts and apply enrichment metadata
+
+**Output**: Enriched claim data including policy_check results and fraud risk
+
+### 3. Gold Agent - Completeness Check, Follow-ups & Decisioning
+- **Purpose**: Ensure claim completeness, generate follow-ups, and make final decision
+- **Responsibilities**:
+  - Use LLM to identify missing documents from OCR outputs (e.g., missing invoice, missing signatures)
+  - Generate follow-up questions for the customer to collect missing items or clarifications
+  - Apply coverage limits, calculate patient responsibility, and produce approval/denial/partial decisions
+  - Produce final audit trail including LLM-assisted rationale
+
+**Output**: Final decision, missing_documents list, follow_up_questions, payment instructions, audit trail
+
+### 4. Orchestrator Agent - Workflow Coordination
+- **Purpose**: Coordinate the full GenAI-enhanced pipeline
+- **Responsibilities**:
+  - Manage pre-processing (OCR), Bronze → Silver → Gold stages
+  - Propagate OCR and LLM outputs between stages
+  - Handle retries, failures, and stage-specific fallbacks
+  - Aggregate metrics and orchestrate batch processing
+
+**Output**: Processed claim with complete stage outputs and follow-ups
 
 ### 5. Supervisor Agent - System Oversight
-- **Purpose**: Monitor system health, detect issues, and recommend interventions
+- **Purpose**: Monitor pipeline health, SLA, and guide escalations
 - **Responsibilities**:
-  - Oversee batch processing
-  - Identify escalations and conflicts
-  - Monitor SLA compliance
-  - Detect performance degradation
-  - Generate health reports
-  - Recommend process improvements
-  
-**Output**: Supervision reports with recommendations and intervention strategies
+  - Supervise batch results and identify systemic issues
+  - Track SLA compliance and LLM performance signals (e.g., low-confidence summaries)
+  - Recommend manual reviews and escalations when LLM or OCR confidence is low
+  - Generate health reports and intervention suggestions
+
+**Output**: Supervision reports with actionable interventions and escalations
 
 ## Data Flow
 
-### Single Claim Processing
+### Single Claim Processing (GenAI-enhanced)
 ```
-Raw Claim JSON
+Customer uploads claim + supporting files (photos, invoices, forms)
     ↓
-[Bronze Agent] → Validates schema, types, dates
+[Orchestrator] → Pre-stage: OCR Agent extracts text from uploads
+    ↓
+[Bronze Agent] → Validate data fields; attach OCR texts; call LLM to summarize incident
     ↓ (Success)
-[Silver Agent] → Enriches data, checks fraud, applies rules
+[Silver Agent] → Fetch policy text; call LLM to compare summary vs policy; enrich with fraud checks
     ↓ (Success)
-[Gold Agent] → Applies coverage, generates decision
+[Gold Agent] → Call LLM to identify missing documents and generate follow-ups; apply coverage limits; make decision
     ↓ (Success)
-Final Claim Decision
-    ├─ Status: APPROVED/DENIED/PARTIAL/REVIEW
-    ├─ Amount: Approved reimbursement
-    ├─ Patient Pay: Out-of-pocket responsibility
-    └─ Audit Trail: Complete compliance record
+Final Claim Output
+    ├─ Decision: APPROVE / DENY / APPROVE_PARTIAL / APPROVE_WITH_REVIEW
+    ├─ Approved Amount & Payment Instructions
+    ├─ Missing Documents (if any) and Follow-up Questions for Customer
+    └─ Audit Trail including LLM-derived rationale
 ```
 
 ### Batch Processing
 ```
-Batch of Raw Claims
+Batch of Raw Claim Packages
     ↓
-[Orchestrator] → Process each claim through pipeline
+[Orchestrator] → Run OCR, then process claims through Bronze → Silver → Gold pipeline
     ↓
-[Supervisor] → Analyze batch results
+[Supervisor] → Aggregate results, evaluate SLA & LLM/OCR confidence, identify escalations or systemic issues
     ├─ Performance metrics
     ├─ Identify escalations
     ├─ Detect conflicts
-    ├─ Generate recommendations
+    ├─ Recommend interventions (manual review, retrain prompts, re-run OCR)
     └─ Health status
 ```
 
 ## Key Features
 
+### GenAI Enhancements
+- OCR extraction for uploaded photos/PDFs to create machine-readable text
+- LLM-based incident summarization to convert multi-file evidence into a concise incident summary
+- LLM-grounded policy coverage checks (compare summary to policy text and identify coverage gaps)
+- LLM-assisted completeness checks that identify missing documents and generate human-friendly follow-up questions
+- Structured LLM outputs to keep decisions auditable and machine-actionable
+
 ### Data Quality Scoring (Bronze)
 - Base score: 0.8 (for passing validation)
-- +0.1 for presence of attachments
+- +0.1 for presence of attachments/OCR outputs
 - +0.05 for complete diagnosis codes
 - Maximum: 1.0
 
@@ -155,11 +191,12 @@ Batch of Raw Claims
 - **In-Network**: 20% coinsurance, $30 copay
 - **Out-of-Network**: 40% coinsurance, $50 copay, deductible applies
 
-### SLA Thresholds
+### SLA & Confidence Thresholds
 - Minimum pipeline success rate: 80%
 - Minimum data quality score: 75%
 - Maximum fraud risk: 70%
-- Acceptable processing time: <5 seconds per claim
+- Minimum LLM confidence threshold (recommended): 0.7 — below this, flag for manual review
+- Acceptable processing time: <5 seconds per claim (excluding OCR/LLM network latency)
 
 ## Usage
 

@@ -5,37 +5,37 @@
 ### Business Objective
 Process health insurance claims through quality tiers (Bronze → Silver → Gold) with increasing levels of validation, enrichment, and business logic application. Each tier performs specific transformations and validations.
 
-### Data Flow
+### Data Flow (GenAI-enhanced)
 ```
-Raw Claims (JSON) 
+Customer submits claim package (JSON) + uploads (photos, invoices, claim form)
     ↓
-[Orchestrator Agent] - Routes claims to processing pipeline
+[Orchestrator Agent] - Ingests package and triggers pre-processing
     ↓
-[Bronze Agent] - Data Ingestion & Validation
+[OCR Agent] - Extracts text from uploaded images & PDFs; attaches ocr_texts to claim
+    ↓
+[Bronze Agent] - Validation & LLM Summarization
     ├─ Schema validation
     ├─ Required fields check
-    ├─ Data type conversion
-    └─ Cleansing (remove duplicates, fix formatting)
+    ├─ Attach OCR outputs
+    ├─ Call LLM to summarize incident from OCR texts
+    └─ Produce incident_summary and data quality score
     ↓
-[Silver Agent] - Data Enrichment & Quality Check
-    ├─ Verify policy holder details
-    ├─ Cross-reference provider networks
-    ├─ Calculate eligible amounts
-    ├─ Detect potential fraud patterns
-    └─ Apply business rules
+[Silver Agent] - LLM Policy Check & Enrichment
+    ├─ Fetch policy text for policy_id
+    ├─ Call LLM to compare incident_summary vs policy text (coverage assessment)
+    ├─ Provider network checks and fraud detection
+    └─ Calculate eligible reimbursement amounts
     ↓
-[Gold Agent] - Final Processing & Business Logic
-    ├─ Apply coverage limits
-    ├─ Calculate patient responsibility
-    ├─ Generate approval/denial recommendations
-    ├─ Create audit trail
-    └─ Format for downstream systems (Claims Payment, Reporting)
+[Gold Agent] - LLM Completeness & Decisioning
+    ├─ Use LLM to identify missing documents and generate follow-up questions
+    ├─ Apply coverage limits and compute patient responsibility
+    ├─ Generate final recommendation (APPROVE/DENY/PARTIAL/REVIEW)
+    └─ Produce auditable rationale including LLM outputs
     ↓
-[Supervisor Agent] - Oversees entire pipeline
-    ├─ Monitors agent performance
-    ├─ Handles escalations
-    ├─ Resolves conflicts between agents
-    └─ Generates pipeline health report
+[Supervisor Agent] - Oversight
+    ├─ Monitor LLM/OCR confidence and pipeline health
+    ├─ Identify escalations and recommend manual review
+    └─ Generate supervision and health reports
 ```
 
 ### Key Features

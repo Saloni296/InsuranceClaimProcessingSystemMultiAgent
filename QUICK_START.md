@@ -18,15 +18,18 @@ A complete **production-ready multi-agent system** for processing health insuran
 Insurance_UseCase/
 │
 ├─ MAIN AGENTS (Core Logic)
-│  ├── bronze_agent.py          [Data Validation & Cleansing]
-│  ├── silver_agent.py          [Enrichment & Fraud Detection]
-│  ├── gold_agent.py            [Final Decisions & Payment]
-│  ├── orchestrator_agent.py    [Pipeline Coordinator]
+│  ├── bronze_agent.py          [Validation, attach OCR & LLM summary]
+│  ├── silver_agent.py          [Policy check (LLM) & Enrichment]
+│  ├── gold_agent.py            [Completeness (LLM), Decisions & Payment]
+│  ├── orchestrator_agent.py    [Pipeline Coordinator & OCR pre-stage]
+│  ├── ocr_agent.py             [OCR extraction from uploads]
+│  ├── llm_agent.py             [LLM wrappers: summarization, policy check, follow-ups]
 │  └── supervisor_agent.py      [System Oversight]
 │
 ├─ EXECUTION
 │  ├── main.py                  [Run the complete system]
 │  └── sample_claims.json       [Test data: 4 insurance claims]
+│  └── sample_claims_genai.json [GenAI demo claim with uploads]
 │
 ├─ DOCUMENTATION
 │  ├── README.md                [Complete system documentation]
@@ -99,14 +102,20 @@ print(f"Interventions: {len(report['interventions'])}")
 ### Data Flow
 
 ```
-RAW CLAIM (JSON)
+Customer uploads claim + files (photos, invoices, forms)
     ↓
 ┌─────────────────────────────────────────────────────┐
-│ BRONZE AGENT - Validation (50ms)                    │
+│ ORCHESTRATOR - Pre-stage (OCR)                      │
+│ ✓ Extract text from uploaded images & PDFs          │
+│ ✓ Normalize amounts & dates when possible           │
+└────────────┬────────────────────────────────────────┘
+             ↓
+┌─────────────────────────────────────────────────────┐
+│ BRONZE AGENT - Validation & LLM Summary             │
 │ ✓ Schema validation                                 │
-│ ✓ Data type checking                                │
-│ ✓ Date format validation                            │
-│ ✓ Quality scoring (80-100%)                         │
+│ ✓ Attach OCR outputs                                │
+│ ✓ Call LLM to summarize incident                    │
+│ ✓ Data quality scoring                              │
 └────────────┬────────────────────────────────────────┘
              ↓
        [SUCCESS?]
@@ -114,11 +123,10 @@ RAW CLAIM (JSON)
       YES       NO → [ESCALATE & FAIL]
       ↓
 ┌─────────────────────────────────────────────────────┐
-│ SILVER AGENT - Enrichment (30ms)                    │
-│ ✓ Policy verification                               │
-│ ✓ Network checks (In/Out)                          │
-│ ✓ Fraud pattern detection                          │
-│ ✓ Cost sharing calculation                         │
+│ SILVER AGENT - Policy Check (LLM) & Enrichment      │
+│ ✓ Fetch policy text                                 │
+│ ✓ Use LLM to compare summary vs policy              │
+│ ✓ Fraud detection & eligible amount calculation     │
 └────────────┬────────────────────────────────────────┘
              ↓
        [SUCCESS?]
@@ -126,12 +134,10 @@ RAW CLAIM (JSON)
       YES       NO → [ESCALATE & FAIL]
       ↓
 ┌─────────────────────────────────────────────────────┐
-│ GOLD AGENT - Decisions (20ms)                       │
-│ ✓ Coverage limits                                   │
-│ ✓ Patient responsibility                           │
-│ ✓ Approval/Denial logic                            │
-│ ✓ Payment instructions                             │
-│ ✓ Audit trail                                       │
+│ GOLD AGENT - Completeness (LLM) & Decisions         │
+│ ✓ Use LLM to detect missing documents & generate Qs │
+│ ✓ Apply coverage limits & compute patient pay       │
+│ ✓ Make final decision & generate audit trail        │
 └────────────┬────────────────────────────────────────┘
              ↓
      FINAL DECISION
