@@ -1,27 +1,27 @@
 {
-  "execution_timestamp": "2026-06-23T08:27:09.403551",
+  "execution_timestamp": "2026-07-02T11:21:02.801641",
   "batch_results": {
-    "batch_id": "BATCH-20260623082709",
-    "total_claims": 4,
+    "batch_id": "BATCH-20260702112102",
+    "total_claims": 2,
     "claim_results": [
       {
-        "claim_id": "CLM-2024-001",
+        "claim_id": "CLM-GENAI-001",
         "pipeline_status": "SUCCESS",
         "final_decision": "APPROVE_PARTIAL",
-        "reason": "Excess amount ($4500.00) exceeds coverage limit",
+        "reason": "Excess amount ($750.00) exceeds coverage limit",
         "confidence": 0.8,
         "approved_amount": 500.0,
         "patient_responsibility": 100.0,
-        "provider": "City General Hospital",
+        "provider": "Good Health Clinic",
         "processing_stages": {
           "bronze": {
             "status": true,
-            "quality_score": 0.9500000000000001
+            "quality_score": 0.8500000000000001
           },
           "silver": {
             "status": true,
             "fraud_risk": 0.0,
-            "issues": 0
+            "issues": 1
           },
           "gold": {
             "status": true,
@@ -30,236 +30,146 @@
         },
         "audit_trail": [
           {
-            "timestamp": "2026-06-23T08:27:09.387369",
+            "timestamp": "2026-07-02T11:21:02.800915",
             "action": "CLAIM_RECEIVED",
             "actor": "System",
-            "details": "Claim CLM-2024-001 received from City General Hospital"
+            "details": "Claim CLM-GENAI-001 received from Good Health Clinic"
           },
           {
-            "timestamp": "2026-06-23T08:27:09.387373",
+            "timestamp": "2026-07-02T11:21:02.800919",
             "action": "VALIDATIONS_COMPLETED",
             "actor": "BronzeAgent",
             "details": "Data validation completed successfully"
           },
           {
-            "timestamp": "2026-06-23T08:27:09.387376",
+            "timestamp": "2026-07-02T11:21:02.800922",
             "action": "ENRICHMENT_COMPLETED",
             "actor": "SilverAgent",
             "details": "Fraud risk score: 0.00%"
           },
           {
-            "timestamp": "2026-06-23T08:27:09.387380",
+            "timestamp": "2026-07-02T11:21:02.800926",
             "action": "DECISION_MADE",
             "actor": "GoldAgent",
-            "details": "Decision: APPROVE_PARTIAL - Excess amount ($4500.00) exceeds coverage limit"
+            "details": "Decision: APPROVE_PARTIAL - Excess amount ($750.00) exceeds coverage limit"
           },
           {
-            "timestamp": "2026-06-23T08:27:09.387383",
+            "timestamp": "2026-07-02T11:21:02.800929",
             "action": "PAYMENT_APPROVED",
             "actor": "PaymentProcessor",
             "details": "Awaiting payment processing"
           }
         ],
-        "completion_timestamp": "2026-06-23T08:27:09.387912"
+        "missing_documents": [],
+        "follow_up_questions": [],
+        "completion_timestamp": "2026-07-02T11:21:02.800972"
       },
       {
-        "claim_id": "CLM-2024-002",
+        "claim_id": "CLM-GENAI-002",
         "pipeline_status": "SUCCESS",
-        "final_decision": "APPROVE",
-        "reason": "All validations passed",
-        "confidence": 0.98,
-        "approved_amount": 1250.5,
-        "patient_responsibility": 1100.2,
-        "provider": "Out of Town Clinic",
+        "final_decision": "APPROVE_WITH_REVIEW",
+        "reason": "Approval with manual review recommended due to 2 issue(s)",
+        "confidence": 0.7,
+        "approved_amount": 320.5,
+        "patient_responsibility": 1000.0,
+        "provider": "Neighborhood Clinic",
         "processing_stages": {
           "bronze": {
             "status": true,
-            "quality_score": 0.9500000000000001
+            "quality_score": 0.8500000000000001
           },
           "silver": {
             "status": true,
-            "fraud_risk": 0.0,
-            "issues": 0
+            "fraud_risk": 0.1,
+            "issues": 1
           },
           "gold": {
             "status": true,
-            "decision": "APPROVE"
+            "decision": "APPROVE_WITH_REVIEW"
           }
         },
         "audit_trail": [
           {
-            "timestamp": "2026-06-23T08:27:09.390101",
+            "timestamp": "2026-07-02T11:21:02.801167",
             "action": "CLAIM_RECEIVED",
             "actor": "System",
-            "details": "Claim CLM-2024-002 received from Out of Town Clinic"
+            "details": "Claim CLM-GENAI-002 received from Neighborhood Clinic"
           },
           {
-            "timestamp": "2026-06-23T08:27:09.390106",
+            "timestamp": "2026-07-02T11:21:02.801171",
             "action": "VALIDATIONS_COMPLETED",
             "actor": "BronzeAgent",
             "details": "Data validation completed successfully"
           },
           {
-            "timestamp": "2026-06-23T08:27:09.390108",
+            "timestamp": "2026-07-02T11:21:02.801173",
             "action": "ENRICHMENT_COMPLETED",
             "actor": "SilverAgent",
-            "details": "Fraud risk score: 0.00%"
+            "details": "Fraud risk score: 10.00%"
           },
           {
-            "timestamp": "2026-06-23T08:27:09.390113",
+            "timestamp": "2026-07-02T11:21:02.801181",
             "action": "DECISION_MADE",
             "actor": "GoldAgent",
-            "details": "Decision: APPROVE - All validations passed"
+            "details": "Decision: APPROVE_WITH_REVIEW - Approval with manual review recommended due to 2 issue(s)"
           },
           {
-            "timestamp": "2026-06-23T08:27:09.390158",
+            "timestamp": "2026-07-02T11:21:02.801184",
             "action": "PAYMENT_APPROVED",
             "actor": "PaymentProcessor",
             "details": "Awaiting payment processing"
           }
         ],
-        "completion_timestamp": "2026-06-23T08:27:09.391040"
-      },
-      {
-        "claim_id": "CLM-2024-003",
-        "pipeline_status": "FAILED_AT_BRONZE",
-        "final_decision": "DENY",
-        "reason": "Validation failed: Missing required field: service_code",
-        "processing_stages": {
-          "bronze": {
-            "success": false,
-            "tier": "BRONZE",
-            "claim_id": "CLM-2024-003",
-            "error": "Validation failed: Missing required field: service_code",
-            "raw_data": {
-              "claim_id": "CLM-2024-003",
-              "policy_id": "POL-99999",
-              "policy_holder": {
-                "name": "Invalid Name",
-                "age": 999,
-                "member_id": "MEM-UNKNOWN"
-              },
-              "claim_date": "2024-01-17",
-              "service_date": "2024-01-17",
-              "provider": {
-                "name": null,
-                "id": "PROV-000",
-                "network": "Unknown"
-              },
-              "claim_amount": "INVALID",
-              "service_code": null,
-              "service_description": "Unknown Service",
-              "diagnosis_codes": [],
-              "status": "draft",
-              "attachments": []
-            },
-            "processing_timestamp": "2026-06-23T08:27:09.392069"
-          },
-          "silver": null,
-          "gold": null
-        },
-        "completion_timestamp": "2026-06-23T08:27:09.392082"
-      },
-      {
-        "claim_id": "CLM-2024-004",
-        "pipeline_status": "SUCCESS",
-        "final_decision": "APPROVE",
-        "reason": "All validations passed",
-        "confidence": 0.98,
-        "approved_amount": 25000.0,
-        "patient_responsibility": 5000.0,
-        "provider": "Premium Surgical Center",
-        "processing_stages": {
-          "bronze": {
-            "status": true,
-            "quality_score": 0.9500000000000001
-          },
-          "silver": {
-            "status": true,
-            "fraud_risk": 0.2,
-            "issues": 0
-          },
-          "gold": {
-            "status": true,
-            "decision": "APPROVE"
-          }
-        },
-        "audit_trail": [
-          {
-            "timestamp": "2026-06-23T08:27:09.394639",
-            "action": "CLAIM_RECEIVED",
-            "actor": "System",
-            "details": "Claim CLM-2024-004 received from Premium Surgical Center"
-          },
-          {
-            "timestamp": "2026-06-23T08:27:09.394643",
-            "action": "VALIDATIONS_COMPLETED",
-            "actor": "BronzeAgent",
-            "details": "Data validation completed successfully"
-          },
-          {
-            "timestamp": "2026-06-23T08:27:09.394646",
-            "action": "ENRICHMENT_COMPLETED",
-            "actor": "SilverAgent",
-            "details": "Fraud risk score: 20.00%"
-          },
-          {
-            "timestamp": "2026-06-23T08:27:09.394651",
-            "action": "DECISION_MADE",
-            "actor": "GoldAgent",
-            "details": "Decision: APPROVE - All validations passed"
-          },
-          {
-            "timestamp": "2026-06-23T08:27:09.394654",
-            "action": "PAYMENT_APPROVED",
-            "actor": "PaymentProcessor",
-            "details": "Awaiting payment processing"
-          }
+        "missing_documents": [
+          "invoice"
         ],
-        "completion_timestamp": "2026-06-23T08:27:09.395358"
+        "follow_up_questions": [
+          "Please upload the invoice showing the billed amount and provider details."
+        ],
+        "completion_timestamp": "2026-07-02T11:21:02.801218"
       }
     ],
     "batch_summary": {
-      "processed": 4,
-      "successful_pipeline": 3,
-      "pipeline_success_rate": 0.75,
+      "processed": 2,
+      "successful_pipeline": 2,
+      "pipeline_success_rate": 1.0,
       "approvals": {
-        "approved": 2,
-        "denied": 1,
+        "approved": 0,
+        "denied": 0,
         "partial": 1,
-        "with_review": 0
+        "with_review": 1
       },
       "financial_summary": {
-        "total_approved_amount": 26750.5,
-        "avg_claim_amount": 13375.25
+        "total_approved_amount": 820.5,
+        "avg_claim_amount": 0
       }
     }
   },
   "supervision_analysis": {
-    "batch_id": "BATCH-20260623082709",
-    "supervision_timestamp": "2026-06-23T08:27:09.395441",
+    "batch_id": "BATCH-20260702112102",
+    "supervision_timestamp": "2026-07-02T11:21:02.801283",
     "batch_results": {
-      "batch_id": "BATCH-20260623082709",
-      "total_claims": 4,
+      "batch_id": "BATCH-20260702112102",
+      "total_claims": 2,
       "claim_results": [
         {
-          "claim_id": "CLM-2024-001",
+          "claim_id": "CLM-GENAI-001",
           "pipeline_status": "SUCCESS",
           "final_decision": "APPROVE_PARTIAL",
-          "reason": "Excess amount ($4500.00) exceeds coverage limit",
+          "reason": "Excess amount ($750.00) exceeds coverage limit",
           "confidence": 0.8,
           "approved_amount": 500.0,
           "patient_responsibility": 100.0,
-          "provider": "City General Hospital",
+          "provider": "Good Health Clinic",
           "processing_stages": {
             "bronze": {
               "status": true,
-              "quality_score": 0.9500000000000001
+              "quality_score": 0.8500000000000001
             },
             "silver": {
               "status": true,
               "fraud_risk": 0.0,
-              "issues": 0
+              "issues": 1
             },
             "gold": {
               "status": true,
@@ -268,281 +178,173 @@
           },
           "audit_trail": [
             {
-              "timestamp": "2026-06-23T08:27:09.387369",
+              "timestamp": "2026-07-02T11:21:02.800915",
               "action": "CLAIM_RECEIVED",
               "actor": "System",
-              "details": "Claim CLM-2024-001 received from City General Hospital"
+              "details": "Claim CLM-GENAI-001 received from Good Health Clinic"
             },
             {
-              "timestamp": "2026-06-23T08:27:09.387373",
+              "timestamp": "2026-07-02T11:21:02.800919",
               "action": "VALIDATIONS_COMPLETED",
               "actor": "BronzeAgent",
               "details": "Data validation completed successfully"
             },
             {
-              "timestamp": "2026-06-23T08:27:09.387376",
+              "timestamp": "2026-07-02T11:21:02.800922",
               "action": "ENRICHMENT_COMPLETED",
               "actor": "SilverAgent",
               "details": "Fraud risk score: 0.00%"
             },
             {
-              "timestamp": "2026-06-23T08:27:09.387380",
+              "timestamp": "2026-07-02T11:21:02.800926",
               "action": "DECISION_MADE",
               "actor": "GoldAgent",
-              "details": "Decision: APPROVE_PARTIAL - Excess amount ($4500.00) exceeds coverage limit"
+              "details": "Decision: APPROVE_PARTIAL - Excess amount ($750.00) exceeds coverage limit"
             },
             {
-              "timestamp": "2026-06-23T08:27:09.387383",
+              "timestamp": "2026-07-02T11:21:02.800929",
               "action": "PAYMENT_APPROVED",
               "actor": "PaymentProcessor",
               "details": "Awaiting payment processing"
             }
           ],
-          "completion_timestamp": "2026-06-23T08:27:09.387912"
+          "missing_documents": [],
+          "follow_up_questions": [],
+          "completion_timestamp": "2026-07-02T11:21:02.800972"
         },
         {
-          "claim_id": "CLM-2024-002",
+          "claim_id": "CLM-GENAI-002",
           "pipeline_status": "SUCCESS",
-          "final_decision": "APPROVE",
-          "reason": "All validations passed",
-          "confidence": 0.98,
-          "approved_amount": 1250.5,
-          "patient_responsibility": 1100.2,
-          "provider": "Out of Town Clinic",
+          "final_decision": "APPROVE_WITH_REVIEW",
+          "reason": "Approval with manual review recommended due to 2 issue(s)",
+          "confidence": 0.7,
+          "approved_amount": 320.5,
+          "patient_responsibility": 1000.0,
+          "provider": "Neighborhood Clinic",
           "processing_stages": {
             "bronze": {
               "status": true,
-              "quality_score": 0.9500000000000001
+              "quality_score": 0.8500000000000001
             },
             "silver": {
               "status": true,
-              "fraud_risk": 0.0,
-              "issues": 0
+              "fraud_risk": 0.1,
+              "issues": 1
             },
             "gold": {
               "status": true,
-              "decision": "APPROVE"
+              "decision": "APPROVE_WITH_REVIEW"
             }
           },
           "audit_trail": [
             {
-              "timestamp": "2026-06-23T08:27:09.390101",
+              "timestamp": "2026-07-02T11:21:02.801167",
               "action": "CLAIM_RECEIVED",
               "actor": "System",
-              "details": "Claim CLM-2024-002 received from Out of Town Clinic"
+              "details": "Claim CLM-GENAI-002 received from Neighborhood Clinic"
             },
             {
-              "timestamp": "2026-06-23T08:27:09.390106",
+              "timestamp": "2026-07-02T11:21:02.801171",
               "action": "VALIDATIONS_COMPLETED",
               "actor": "BronzeAgent",
               "details": "Data validation completed successfully"
             },
             {
-              "timestamp": "2026-06-23T08:27:09.390108",
+              "timestamp": "2026-07-02T11:21:02.801173",
               "action": "ENRICHMENT_COMPLETED",
               "actor": "SilverAgent",
-              "details": "Fraud risk score: 0.00%"
+              "details": "Fraud risk score: 10.00%"
             },
             {
-              "timestamp": "2026-06-23T08:27:09.390113",
+              "timestamp": "2026-07-02T11:21:02.801181",
               "action": "DECISION_MADE",
               "actor": "GoldAgent",
-              "details": "Decision: APPROVE - All validations passed"
+              "details": "Decision: APPROVE_WITH_REVIEW - Approval with manual review recommended due to 2 issue(s)"
             },
             {
-              "timestamp": "2026-06-23T08:27:09.390158",
+              "timestamp": "2026-07-02T11:21:02.801184",
               "action": "PAYMENT_APPROVED",
               "actor": "PaymentProcessor",
               "details": "Awaiting payment processing"
             }
           ],
-          "completion_timestamp": "2026-06-23T08:27:09.391040"
-        },
-        {
-          "claim_id": "CLM-2024-003",
-          "pipeline_status": "FAILED_AT_BRONZE",
-          "final_decision": "DENY",
-          "reason": "Validation failed: Missing required field: service_code",
-          "processing_stages": {
-            "bronze": {
-              "success": false,
-              "tier": "BRONZE",
-              "claim_id": "CLM-2024-003",
-              "error": "Validation failed: Missing required field: service_code",
-              "raw_data": {
-                "claim_id": "CLM-2024-003",
-                "policy_id": "POL-99999",
-                "policy_holder": {
-                  "name": "Invalid Name",
-                  "age": 999,
-                  "member_id": "MEM-UNKNOWN"
-                },
-                "claim_date": "2024-01-17",
-                "service_date": "2024-01-17",
-                "provider": {
-                  "name": null,
-                  "id": "PROV-000",
-                  "network": "Unknown"
-                },
-                "claim_amount": "INVALID",
-                "service_code": null,
-                "service_description": "Unknown Service",
-                "diagnosis_codes": [],
-                "status": "draft",
-                "attachments": []
-              },
-              "processing_timestamp": "2026-06-23T08:27:09.392069"
-            },
-            "silver": null,
-            "gold": null
-          },
-          "completion_timestamp": "2026-06-23T08:27:09.392082"
-        },
-        {
-          "claim_id": "CLM-2024-004",
-          "pipeline_status": "SUCCESS",
-          "final_decision": "APPROVE",
-          "reason": "All validations passed",
-          "confidence": 0.98,
-          "approved_amount": 25000.0,
-          "patient_responsibility": 5000.0,
-          "provider": "Premium Surgical Center",
-          "processing_stages": {
-            "bronze": {
-              "status": true,
-              "quality_score": 0.9500000000000001
-            },
-            "silver": {
-              "status": true,
-              "fraud_risk": 0.2,
-              "issues": 0
-            },
-            "gold": {
-              "status": true,
-              "decision": "APPROVE"
-            }
-          },
-          "audit_trail": [
-            {
-              "timestamp": "2026-06-23T08:27:09.394639",
-              "action": "CLAIM_RECEIVED",
-              "actor": "System",
-              "details": "Claim CLM-2024-004 received from Premium Surgical Center"
-            },
-            {
-              "timestamp": "2026-06-23T08:27:09.394643",
-              "action": "VALIDATIONS_COMPLETED",
-              "actor": "BronzeAgent",
-              "details": "Data validation completed successfully"
-            },
-            {
-              "timestamp": "2026-06-23T08:27:09.394646",
-              "action": "ENRICHMENT_COMPLETED",
-              "actor": "SilverAgent",
-              "details": "Fraud risk score: 20.00%"
-            },
-            {
-              "timestamp": "2026-06-23T08:27:09.394651",
-              "action": "DECISION_MADE",
-              "actor": "GoldAgent",
-              "details": "Decision: APPROVE - All validations passed"
-            },
-            {
-              "timestamp": "2026-06-23T08:27:09.394654",
-              "action": "PAYMENT_APPROVED",
-              "actor": "PaymentProcessor",
-              "details": "Awaiting payment processing"
-            }
+          "missing_documents": [
+            "invoice"
           ],
-          "completion_timestamp": "2026-06-23T08:27:09.395358"
+          "follow_up_questions": [
+            "Please upload the invoice showing the billed amount and provider details."
+          ],
+          "completion_timestamp": "2026-07-02T11:21:02.801218"
         }
       ],
       "batch_summary": {
-        "processed": 4,
-        "successful_pipeline": 3,
-        "pipeline_success_rate": 0.75,
+        "processed": 2,
+        "successful_pipeline": 2,
+        "pipeline_success_rate": 1.0,
         "approvals": {
-          "approved": 2,
-          "denied": 1,
+          "approved": 0,
+          "denied": 0,
           "partial": 1,
-          "with_review": 0
+          "with_review": 1
         },
         "financial_summary": {
-          "total_approved_amount": 26750.5,
-          "avg_claim_amount": 13375.25
+          "total_approved_amount": 820.5,
+          "avg_claim_amount": 0
         }
       }
     },
     "oversight_analysis": {
-      "timestamp": "2026-06-23T08:27:09.395396",
+      "timestamp": "2026-07-02T11:21:02.801248",
       "performance_metrics": {
-        "pipeline_success_rate": 0.75,
-        "approval_rate": 0.5,
-        "denial_rate": 0.25,
-        "partial_approval_rate": 0.25,
-        "manual_review_rate": 0.0
+        "pipeline_success_rate": 1.0,
+        "approval_rate": 0.0,
+        "denial_rate": 0.0,
+        "partial_approval_rate": 0.5,
+        "manual_review_rate": 0.5
       },
       "sla_compliance": {
-        "pipeline_success": "FAILED"
+        "pipeline_success": "PASSED"
       },
       "quality_assessment": {
-        "data_quality": "LOW"
+        "data_quality": "ACCEPTABLE"
       },
-      "recommendations": [
-        "Pipeline success rate 75.00% below threshold 80.00%",
-        "Average data quality 71.25% below threshold"
-      ]
+      "recommendations": []
     },
     "escalations": [
       {
-        "claim_id": "CLM-2024-003",
-        "escalation_level": "HIGH",
+        "claim_id": "CLM-GENAI-002",
+        "escalation_level": "MEDIUM",
         "reasons": [
-          "Pipeline failure: FAILED_AT_BRONZE"
+          "Decision: APPROVE_WITH_REVIEW"
         ],
-        "timestamp": "2026-06-23T08:27:09.395428",
+        "timestamp": "2026-07-02T11:21:02.801270",
         "assigned_to": "Manual Review Queue"
       }
     ],
     "conflicts": [],
-    "interventions": [
-      {
-        "type": "PROCESS_REVIEW",
-        "priority": "HIGH",
-        "action": "Review Bronze and Silver agent configurations",
-        "target": "Pipeline Configuration",
-        "estimated_impact": "Improve pipeline success rate"
-      },
-      {
-        "type": "DATA_QUALITY_REVIEW",
-        "priority": "MEDIUM",
-        "action": "Enhance Bronze agent validation rules",
-        "target": "Bronze Agent",
-        "estimated_impact": "Improve data quality scores"
-      }
-    ],
+    "interventions": [],
     "supervisor_recommendation": {
-      "status": "BATCH_REVIEW_REQUIRED",
-      "primary_action": "Manual review of entire batch recommended",
-      "timestamp": "2026-06-23T08:27:09.395445",
+      "status": "ESCALATION_THRESHOLD_EXCEEDED",
+      "primary_action": "Escalation count high - consider workflow optimization",
+      "timestamp": "2026-07-02T11:21:02.801289",
       "requires_manual_intervention": true
     }
   },
   "system_health": {
-    "report_timestamp": "2026-06-23T08:27:09.400718",
+    "report_timestamp": "2026-07-02T11:21:02.801454",
     "system_health": {
-      "status": "DEGRADED",
-      "overall_success_rate": 0.8,
+      "status": "HEALTHY",
+      "overall_success_rate": 1.0,
       "batches_supervised": 1
     },
     "pipeline_metrics": {
       "agent": "Orchestrator Agent",
-      "total_claims_processed": 5,
-      "successful": 4,
-      "failed": 1,
-      "success_rate": 0.8,
+      "total_claims_processed": 3,
+      "successful": 3,
+      "failed": 0,
+      "success_rate": 1.0,
       "stage_failures": {
-        "bronze": 1,
+        "bronze": 0,
         "silver": 0,
         "gold": 0
       },
@@ -550,21 +352,21 @@
         "bronze": {
           "agent": "Bronze Agent",
           "tier": "BRONZE",
-          "processed": 4,
-          "failed": 1,
-          "success_rate": 0.8
+          "processed": 3,
+          "failed": 0,
+          "success_rate": 1.0
         },
         "silver": {
           "agent": "Silver Agent",
           "tier": "SILVER",
-          "processed": 4,
+          "processed": 3,
           "failed": 0,
           "success_rate": 1.0
         },
         "gold": {
           "agent": "Gold Agent",
           "tier": "GOLD",
-          "processed": 4,
+          "processed": 3,
           "failed": 0,
           "success_rate": 1.0
         }
@@ -573,7 +375,7 @@
     "oversight_summary": {
       "total_escalations": 1,
       "total_conflicts": 0,
-      "total_interventions": 2
+      "total_interventions": 0
     },
     "critical_issues": [],
     "recommendations": [
