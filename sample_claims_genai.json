@@ -1,0 +1,35 @@
+﻿[
+  {
+    "claim_id": "CLM-GENAI-001",
+    "policy_id": "POL-001",
+    "policy_holder": {"name": "John Doe", "age": 45, "member_id": "M-1001"},
+    "claim_date": "2026-06-30",
+    "service_date": "2026-06-29",
+    "provider": {"name": "Good Health Clinic", "id": "PROV-102"},
+    "claim_amount": 1250.00,
+    "service_code": "99214",
+    "service_description": "Office visit for evaluation",
+    "diagnosis_codes": ["J02.9"],
+    "uploaded_files": [
+      "photos/photo1.jpg",
+      "invoices/invoice1.pdf",
+      "forms/claim_form1.pdf"
+    ]
+  },
+  {
+    "claim_id": "CLM-GENAI-002",
+    "policy_id": "POL-001",
+    "policy_holder": {"name": "Alice Roe", "age": 30, "member_id": "M-1002"},
+    "claim_date": "2026-06-28",
+    "service_date": "2026-06-28",
+    "provider": {"name": "Neighborhood Clinic", "id": "PROV-456"},
+    "claim_amount": 320.50,
+    "service_code": "71046",
+    "service_description": "Chest X-ray",
+    "diagnosis_codes": ["R07.9"],
+    "uploaded_files": [
+      "photos/photo_xray.jpg",
+      "forms/claim_form2.pdf"
+    ]
+  }
+]
