@@ -6,7 +6,7 @@ Performs cross-reference checks, fraud detection, and business rule application
 from typing import Any, Dict, List
 from datetime import datetime
 import logging
-from agent import llm_agent
+from agents import llm_agent
 
 logger = logging.getLogger(__name__)
 
