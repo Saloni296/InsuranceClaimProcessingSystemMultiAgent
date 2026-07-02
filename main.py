@@ -15,11 +15,11 @@ from datetime import datetime
 from pathlib import Path
 
 # Import agents
-from bronze_agent import BronzeAgent
-from silver_agent import SilverAgent
-from gold_agent import GoldAgent
-from orchestrator_agent import OrchestratorAgent
-from supervisor_agent import SupervisorAgent
+from agents.bronze_agent import BronzeAgent
+from agents.silver_agent import SilverAgent
+from agents.gold_agent import GoldAgent
+from agents.orchestrator_agent import OrchestratorAgent
+from agents.supervisor_agent import SupervisorAgent
 
 
 def load_claims(file_path: str) -> list:
