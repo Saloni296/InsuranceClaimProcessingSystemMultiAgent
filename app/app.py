@@ -11,9 +11,10 @@ from agents.supervisor_agent import SupervisorAgent
 
 
 def load_claims():
-    base = Path(__file__).parent
-    genai = base / "sample_claims_genai.json"
-    legacy = base / "sample_claims.json"
+    repo_root = Path(__file__).parent.parent
+    data_dir = repo_root / "data"
+    genai = data_dir / "sample_claims_genai.json"
+    legacy = data_dir / "sample_claims.json"
     if genai.exists():
         with open(genai, 'r', encoding='utf-8-sig') as f:
             claims = json.load(f)
@@ -27,7 +28,8 @@ def load_claims():
 
 
 def save_processing_results(results):
-    out = Path(__file__).parent / "processing_results.json"
+    out = Path(__file__).parent.parent / "data" / "processing_results.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=2, default=str)
 

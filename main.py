@@ -198,12 +198,13 @@ def main():
     supervisor_agent = SupervisorAgent(orchestrator_agent)
     print("[OK] All agents initialized\n")
     
-    # Load claims (prefer GenAI sample if present)
-    claims_file = Path(__file__).parent / "sample_claims_genai.json"
+    # Load claims (prefer GenAI sample if present) from data/ directory
+    data_dir = Path(__file__).parent / "data"
+    claims_file = data_dir / "sample_claims_genai.json"
     if not claims_file.exists():
-        claims_file = Path(__file__).parent / "sample_claims.json"
+        claims_file = data_dir / "sample_claims.json"
     if not claims_file.exists():
-        print(f"[ERROR] Claims file not found: {claims_file}")
+        print(f"[ERROR] Claims file not found in data/: {claims_file}")
         sys.exit(1)
 
     # Support both formats: genai file is a list, legacy sample_claims.json has {'claims': [...]}
