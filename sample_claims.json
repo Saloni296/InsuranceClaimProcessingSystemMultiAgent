@@ -1,0 +1,92 @@
+{
+  "claims": [
+    {
+      "claim_id": "CLM-2024-001",
+      "policy_id": "POL-12345",
+      "policy_holder": {
+        "name": "John Doe",
+        "age": 35,
+        "member_id": "MEM-001"
+      },
+      "claim_date": "2024-01-15",
+      "service_date": "2024-01-10",
+      "provider": {
+        "name": "City General Hospital",
+        "id": "PROV-789",
+        "network": "In-Network"
+      },
+      "claim_amount": 5000.00,
+      "service_code": "99214",
+      "service_description": "Office visit - established patient, moderate",
+      "diagnosis_codes": ["I10", "E11"],
+      "status": "submitted",
+      "attachments": ["invoice", "itemized_bill"]
+    },
+    {
+      "claim_id": "CLM-2024-002",
+      "policy_id": "POL-54321",
+      "policy_holder": {
+        "name": "Jane Smith",
+        "age": 42,
+        "member_id": "MEM-002"
+      },
+      "claim_date": "2024-01-16",
+      "service_date": "2024-01-12",
+      "provider": {
+        "name": "Out of Town Clinic",
+        "id": "PROV-456",
+        "network": "Out-of-Network"
+      },
+      "claim_amount": 1250.50,
+      "service_code": "71046",
+      "service_description": "Chest X-ray",
+      "diagnosis_codes": ["J45"],
+      "status": "submitted",
+      "attachments": ["imaging_report"]
+    },
+    {
+      "claim_id": "CLM-2024-003",
+      "policy_id": "POL-99999",
+      "policy_holder": {
+        "name": "Invalid Name",
+        "age": 999,
+        "member_id": "MEM-UNKNOWN"
+      },
+      "claim_date": "2024-01-17",
+      "service_date": "2024-01-17",
+      "provider": {
+        "name": null,
+        "id": "PROV-000",
+        "network": "Unknown"
+      },
+      "claim_amount": "INVALID",
+      "service_code": null,
+      "service_description": "Unknown Service",
+      "diagnosis_codes": [],
+      "status": "draft",
+      "attachments": []
+    },
+    {
+      "claim_id": "CLM-2024-004",
+      "policy_id": "POL-55555",
+      "policy_holder": {
+        "name": "Robert Johnson",
+        "age": 28,
+        "member_id": "MEM-004"
+      },
+      "claim_date": "2024-01-18",
+      "service_date": "2024-01-14",
+      "provider": {
+        "name": "Premium Surgical Center",
+        "id": "PROV-102",
+        "network": "In-Network"
+      },
+      "claim_amount": 25000.00,
+      "service_code": "27447",
+      "service_description": "Total knee replacement",
+      "diagnosis_codes": ["M17.11", "M79.3"],
+      "status": "submitted",
+      "attachments": ["surgical_report", "pre_auth_approval", "anesthesia_record"]
+    }
+  ]
+}
