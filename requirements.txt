@@ -1,1 +1,15 @@
+# Requirements for GenAI pipeline (placeholder)
+# Current implementation uses only Python standard library.
+# Uncomment or add real dependencies when integrating real OCR/LLM providers.
 
+# Common LLM and OCR libraries you may need:
+# openai (OpenAI API client)
+openai>=0.27.0
+# transformers (local models / prompt tooling)
+transformers>=4.30.0
+# pillow for image handling
+Pillow>=9.0.0
+# pytesseract for OCR (requires Tesseract installed on host)
+pytesseract>=0.3.10
+# requests for HTTP calls
+requests>=2.28.0
