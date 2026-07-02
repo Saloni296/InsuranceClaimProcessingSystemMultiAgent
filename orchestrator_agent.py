@@ -50,6 +50,20 @@ class OrchestratorAgent:
         
         self.pipeline_metrics['total_claims'] += 1
         
+        # Pre-Stage: OCR extraction (if uploaded files present)
+        uploaded_files = raw_claim.get('uploaded_files', [])
+        ocr_texts = {}
+        if uploaded_files:
+            print(f"\n[PRE-STAGE] OCR extraction for {len(uploaded_files)} uploaded file(s)")
+            # Placeholder OCR logic - replace with real OCR agent call or service
+            for fp in uploaded_files:
+                filename = fp.split('/')[-1].split('\\')[-1]
+                ocr_texts[fp] = f"[OCR TEXT for {filename}]"
+            raw_claim['ocr_texts'] = ocr_texts
+            print(f"[OK] OCR extracted text for {len(ocr_texts)} file(s)")
+        else:
+            raw_claim['ocr_texts'] = {}
+        
         # Stage 1: Bronze Agent
         print(f"\n[STAGE 1/3] Bronze Tier - Data Ingestion & Validation")
         bronze_result = self.bronze.process(raw_claim)
@@ -148,6 +162,8 @@ class OrchestratorAgent:
                 }
             },
             'audit_trail': final_data['audit_trail'],
+            'missing_documents': final_data.get('missing_documents', []),
+            'follow_up_questions': final_data.get('follow_up_questions', []),
             'completion_timestamp': datetime.now().isoformat()
         }
     

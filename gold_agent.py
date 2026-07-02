@@ -6,6 +6,7 @@ Generates approval/denial recommendations, applies coverage limits, and formats 
 from typing import Any, Dict, List
 from datetime import datetime
 import logging
+import llm_agent
 
 logger = logging.getLogger(__name__)
 
@@ -69,8 +70,20 @@ class GoldAgent:
             # 2. Calculate patient responsibility
             patient_resp = self._calculate_patient_responsibility(data, coverage_result)
             
-            # 3. Generate decision
-            decision = self._generate_decision(data, silver_data.get('issues', []), coverage_result)
+            # 2.5 LLM-based completeness check: identify missing documents and generate follow-ups
+            issues = list(silver_data.get('issues', []))
+            try:
+                completeness = llm_agent.check_completeness_and_generate_questions(data, data.get('ocr_texts', {}))
+                final_data['missing_documents'] = completeness.get('missing_documents', [])
+                final_data['follow_up_questions'] = completeness.get('follow_up_questions', [])
+                if completeness.get('missing_documents'):
+                    issues.append(f"Missing documents detected: {', '.join(completeness.get('missing_documents', []))}")
+            except Exception:
+                final_data['missing_documents'] = []
+                final_data['follow_up_questions'] = []
+
+            # 3. Generate decision (include any completeness issues)
+            decision = self._generate_decision(data, issues, coverage_result)
             
             # 4. Create payment details
             payment_details = self._create_payment_details(data, coverage_result, patient_resp, decision)

@@ -45,11 +45,19 @@ def print_claim_summary(claim_result: dict) -> None:
     print(f"Final Decision: {claim_result['final_decision']}")
     
     if claim_result['pipeline_status'] == 'SUCCESS':
-        print(f"Approved Amount: ${claim_result['approved_amount']:.2f}")
-        print(f"Patient Responsibility: ${claim_result['patient_responsibility']:.2f}")
-        print(f"Confidence Score: {claim_result['confidence']:.2%}")
+        print(f"Approved Amount: ${claim_result.get('approved_amount', 0):.2f}")
+        print(f"Patient Responsibility: ${claim_result.get('patient_responsibility', 0):.2f}")
+        print(f"Confidence Score: {claim_result.get('confidence', 0):.2%}")
+        if claim_result.get('missing_documents'):
+            print("Missing Documents:")
+            for md in claim_result.get('missing_documents', []):
+                print(f"  - {md}")
+        if claim_result.get('follow_up_questions'):
+            print("Follow-up Questions:")
+            for q in claim_result.get('follow_up_questions', []):
+                print(f"  - {q}")
     else:
-        print(f"Reason: {claim_result['reason']}")
+        print(f"Reason: {claim_result.get('reason', 'N/A')}")
     
     print(f"{'-'*70}")
 

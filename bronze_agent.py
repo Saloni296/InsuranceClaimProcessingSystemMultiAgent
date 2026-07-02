@@ -6,6 +6,7 @@ Performs initial schema validation, data cleansing, and quality checks
 from typing import Any, Dict, List
 from datetime import datetime
 import logging
+import llm_agent
 
 logger = logging.getLogger(__name__)
 
@@ -103,6 +104,15 @@ class BronzeAgent:
                 'validation_errors': errors,
                 'processing_timestamp': datetime.now().isoformat()
             }
+
+            # Attach OCR texts (if present) and generate an LLM-based incident summary
+            ocr_texts = raw_claim.get('ocr_texts', {})
+            cleaned_data['ocr_texts'] = ocr_texts
+            try:
+                incident_summary = llm_agent.summarize_incident(ocr_texts) if ocr_texts else ''
+            except Exception:
+                incident_summary = ''
+            cleaned_data['incident_summary'] = incident_summary
             
             self.processed_count += 1
             

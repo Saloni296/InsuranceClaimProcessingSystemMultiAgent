@@ -6,6 +6,7 @@ Performs cross-reference checks, fraud detection, and business rule application
 from typing import Any, Dict, List
 from datetime import datetime
 import logging
+import llm_agent
 
 logger = logging.getLogger(__name__)
 
@@ -21,13 +22,18 @@ class SilverAgent:
         
         # Mock databases
         self.valid_policies = {
-            'POL-12345', 'POL-54321', 'POL-99999', 'POL-55555'
+            'POL-12345', 'POL-54321', 'POL-99999', 'POL-55555', 'POL-001'
         }
         self.network_providers = {
             'PROV-789', 'PROV-102'  # In-network
         }
         self.valid_service_codes = {
             '99214', '71046', '27447', '99213', '99215'
+        }
+        # Mock policy texts for LLM policy checks
+        self.policy_texts = {
+            'POL-12345': 'Standard policy text: includes coverage for office visits and imaging.',
+            'POL-001': 'Sample policy text: covers eligible medical services unless explicitly excluded.'
         }
     
     def process(self, bronze_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -101,6 +107,16 @@ class SilverAgent:
             
             self.processed_count += 1
             
+            # Optionally run an LLM-based policy coverage check using the incident summary
+            policy_text = self.policy_texts.get(data['policy_id'], '')
+            try:
+                policy_check = llm_agent.check_policy_coverage(data.get('incident_summary', ''), policy_text)
+                enrichments['policy_check'] = policy_check
+                if not policy_check.get('coverage_match', True):
+                    issues.append('Policy coverage mismatch detected by LLM')
+            except Exception:
+                enrichments['policy_check'] = {'coverage_match': True, 'details': 'LLM check unavailable'}
+
             enriched_data.update({
                 'status': 'silver_enriched',
                 'enrichments': enrichments,
