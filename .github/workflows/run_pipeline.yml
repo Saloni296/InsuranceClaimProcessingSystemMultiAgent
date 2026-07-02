@@ -8,6 +8,8 @@ jobs:
   run-pipeline:
     name: Run pipeline and upload results
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
@@ -24,11 +26,25 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt || true; fi
 
       - name: Run pipeline
+        working-directory: ${{ github.workspace }}
         run: |
-          python main.py
+          echo "Running from $(pwd)"
+          echo "PYTHONPATH=$PWD"
+          PYTHONPATH=$PWD python main.py
 
       - name: Upload processing results
         uses: actions/upload-artifact@v4
         with:
           name: processing-results
           path: processing_results.json
+
+      - name: Commit reports back to repo
+        if: always()
+        run: |
+          echo "Committing reports to repository"
+          git status
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/*.json || true
+          git commit -m "Add generated reports from CI" || echo "No changes to commit"
+          git push
