@@ -1,0 +1,386 @@
+﻿{
+  "execution_timestamp": "2026-07-02T11:06:29.688378",
+  "batch_results": {
+    "batch_id": "BATCH-20260702110629",
+    "total_claims": 2,
+    "claim_results": [
+      {
+        "claim_id": "CLM-GENAI-001",
+        "pipeline_status": "SUCCESS",
+        "final_decision": "APPROVE_PARTIAL",
+        "reason": "Excess amount ($750.00) exceeds coverage limit",
+        "confidence": 0.8,
+        "approved_amount": 500.0,
+        "patient_responsibility": 100.0,
+        "provider": "Good Health Clinic",
+        "processing_stages": {
+          "bronze": {
+            "status": true,
+            "quality_score": 0.8500000000000001
+          },
+          "silver": {
+            "status": true,
+            "fraud_risk": 0.0,
+            "issues": 1
+          },
+          "gold": {
+            "status": true,
+            "decision": "APPROVE_PARTIAL"
+          }
+        },
+        "audit_trail": [
+          {
+            "timestamp": "2026-07-02T11:06:29.687931",
+            "action": "CLAIM_RECEIVED",
+            "actor": "System",
+            "details": "Claim CLM-GENAI-001 received from Good Health Clinic"
+          },
+          {
+            "timestamp": "2026-07-02T11:06:29.687933",
+            "action": "VALIDATIONS_COMPLETED",
+            "actor": "BronzeAgent",
+            "details": "Data validation completed successfully"
+          },
+          {
+            "timestamp": "2026-07-02T11:06:29.687935",
+            "action": "ENRICHMENT_COMPLETED",
+            "actor": "SilverAgent",
+            "details": "Fraud risk score: 0.00%"
+          },
+          {
+            "timestamp": "2026-07-02T11:06:29.687938",
+            "action": "DECISION_MADE",
+            "actor": "GoldAgent",
+            "details": "Decision: APPROVE_PARTIAL - Excess amount ($750.00) exceeds coverage limit"
+          },
+          {
+            "timestamp": "2026-07-02T11:06:29.687940",
+            "action": "PAYMENT_APPROVED",
+            "actor": "PaymentProcessor",
+            "details": "Awaiting payment processing"
+          }
+        ],
+        "missing_documents": [],
+        "follow_up_questions": [],
+        "completion_timestamp": "2026-07-02T11:06:29.687967"
+      },
+      {
+        "claim_id": "CLM-GENAI-002",
+        "pipeline_status": "SUCCESS",
+        "final_decision": "APPROVE_WITH_REVIEW",
+        "reason": "Approval with manual review recommended due to 2 issue(s)",
+        "confidence": 0.7,
+        "approved_amount": 320.5,
+        "patient_responsibility": 1000.0,
+        "provider": "Neighborhood Clinic",
+        "processing_stages": {
+          "bronze": {
+            "status": true,
+            "quality_score": 0.8500000000000001
+          },
+          "silver": {
+            "status": true,
+            "fraud_risk": 0.1,
+            "issues": 1
+          },
+          "gold": {
+            "status": true,
+            "decision": "APPROVE_WITH_REVIEW"
+          }
+        },
+        "audit_trail": [
+          {
+            "timestamp": "2026-07-02T11:06:29.688091",
+            "action": "CLAIM_RECEIVED",
+            "actor": "System",
+            "details": "Claim CLM-GENAI-002 received from Neighborhood Clinic"
+          },
+          {
+            "timestamp": "2026-07-02T11:06:29.688093",
+            "action": "VALIDATIONS_COMPLETED",
+            "actor": "BronzeAgent",
+            "details": "Data validation completed successfully"
+          },
+          {
+            "timestamp": "2026-07-02T11:06:29.688095",
+            "action": "ENRICHMENT_COMPLETED",
+            "actor": "SilverAgent",
+            "details": "Fraud risk score: 10.00%"
+          },
+          {
+            "timestamp": "2026-07-02T11:06:29.688099",
+            "action": "DECISION_MADE",
+            "actor": "GoldAgent",
+            "details": "Decision: APPROVE_WITH_REVIEW - Approval with manual review recommended due to 2 issue(s)"
+          },
+          {
+            "timestamp": "2026-07-02T11:06:29.688101",
+            "action": "PAYMENT_APPROVED",
+            "actor": "PaymentProcessor",
+            "details": "Awaiting payment processing"
+          }
+        ],
+        "missing_documents": [
+          "invoice"
+        ],
+        "follow_up_questions": [
+          "Please upload the invoice showing the billed amount and provider details."
+        ],
+        "completion_timestamp": "2026-07-02T11:06:29.688124"
+      }
+    ],
+    "batch_summary": {
+      "processed": 2,
+      "successful_pipeline": 2,
+      "pipeline_success_rate": 1.0,
+      "approvals": {
+        "approved": 0,
+        "denied": 0,
+        "partial": 1,
+        "with_review": 1
+      },
+      "financial_summary": {
+        "total_approved_amount": 820.5,
+        "avg_claim_amount": 0
+      }
+    }
+  },
+  "supervision_analysis": {
+    "batch_id": "BATCH-20260702110629",
+    "supervision_timestamp": "2026-07-02T11:06:29.688162",
+    "batch_results": {
+      "batch_id": "BATCH-20260702110629",
+      "total_claims": 2,
+      "claim_results": [
+        {
+          "claim_id": "CLM-GENAI-001",
+          "pipeline_status": "SUCCESS",
+          "final_decision": "APPROVE_PARTIAL",
+          "reason": "Excess amount ($750.00) exceeds coverage limit",
+          "confidence": 0.8,
+          "approved_amount": 500.0,
+          "patient_responsibility": 100.0,
+          "provider": "Good Health Clinic",
+          "processing_stages": {
+            "bronze": {
+              "status": true,
+              "quality_score": 0.8500000000000001
+            },
+            "silver": {
+              "status": true,
+              "fraud_risk": 0.0,
+              "issues": 1
+            },
+            "gold": {
+              "status": true,
+              "decision": "APPROVE_PARTIAL"
+            }
+          },
+          "audit_trail": [
+            {
+              "timestamp": "2026-07-02T11:06:29.687931",
+              "action": "CLAIM_RECEIVED",
+              "actor": "System",
+              "details": "Claim CLM-GENAI-001 received from Good Health Clinic"
+            },
+            {
+              "timestamp": "2026-07-02T11:06:29.687933",
+              "action": "VALIDATIONS_COMPLETED",
+              "actor": "BronzeAgent",
+              "details": "Data validation completed successfully"
+            },
+            {
+              "timestamp": "2026-07-02T11:06:29.687935",
+              "action": "ENRICHMENT_COMPLETED",
+              "actor": "SilverAgent",
+              "details": "Fraud risk score: 0.00%"
+            },
+            {
+              "timestamp": "2026-07-02T11:06:29.687938",
+              "action": "DECISION_MADE",
+              "actor": "GoldAgent",
+              "details": "Decision: APPROVE_PARTIAL - Excess amount ($750.00) exceeds coverage limit"
+            },
+            {
+              "timestamp": "2026-07-02T11:06:29.687940",
+              "action": "PAYMENT_APPROVED",
+              "actor": "PaymentProcessor",
+              "details": "Awaiting payment processing"
+            }
+          ],
+          "missing_documents": [],
+          "follow_up_questions": [],
+          "completion_timestamp": "2026-07-02T11:06:29.687967"
+        },
+        {
+          "claim_id": "CLM-GENAI-002",
+          "pipeline_status": "SUCCESS",
+          "final_decision": "APPROVE_WITH_REVIEW",
+          "reason": "Approval with manual review recommended due to 2 issue(s)",
+          "confidence": 0.7,
+          "approved_amount": 320.5,
+          "patient_responsibility": 1000.0,
+          "provider": "Neighborhood Clinic",
+          "processing_stages": {
+            "bronze": {
+              "status": true,
+              "quality_score": 0.8500000000000001
+            },
+            "silver": {
+              "status": true,
+              "fraud_risk": 0.1,
+              "issues": 1
+            },
+            "gold": {
+              "status": true,
+              "decision": "APPROVE_WITH_REVIEW"
+            }
+          },
+          "audit_trail": [
+            {
+              "timestamp": "2026-07-02T11:06:29.688091",
+              "action": "CLAIM_RECEIVED",
+              "actor": "System",
+              "details": "Claim CLM-GENAI-002 received from Neighborhood Clinic"
+            },
+            {
+              "timestamp": "2026-07-02T11:06:29.688093",
+              "action": "VALIDATIONS_COMPLETED",
+              "actor": "BronzeAgent",
+              "details": "Data validation completed successfully"
+            },
+            {
+              "timestamp": "2026-07-02T11:06:29.688095",
+              "action": "ENRICHMENT_COMPLETED",
+              "actor": "SilverAgent",
+              "details": "Fraud risk score: 10.00%"
+            },
+            {
+              "timestamp": "2026-07-02T11:06:29.688099",
+              "action": "DECISION_MADE",
+              "actor": "GoldAgent",
+              "details": "Decision: APPROVE_WITH_REVIEW - Approval with manual review recommended due to 2 issue(s)"
+            },
+            {
+              "timestamp": "2026-07-02T11:06:29.688101",
+              "action": "PAYMENT_APPROVED",
+              "actor": "PaymentProcessor",
+              "details": "Awaiting payment processing"
+            }
+          ],
+          "missing_documents": [
+            "invoice"
+          ],
+          "follow_up_questions": [
+            "Please upload the invoice showing the billed amount and provider details."
+          ],
+          "completion_timestamp": "2026-07-02T11:06:29.688124"
+        }
+      ],
+      "batch_summary": {
+        "processed": 2,
+        "successful_pipeline": 2,
+        "pipeline_success_rate": 1.0,
+        "approvals": {
+          "approved": 0,
+          "denied": 0,
+          "partial": 1,
+          "with_review": 1
+        },
+        "financial_summary": {
+          "total_approved_amount": 820.5,
+          "avg_claim_amount": 0
+        }
+      }
+    },
+    "oversight_analysis": {
+      "timestamp": "2026-07-02T11:06:29.688142",
+      "performance_metrics": {
+        "pipeline_success_rate": 1.0,
+        "approval_rate": 0.0,
+        "denial_rate": 0.0,
+        "partial_approval_rate": 0.5,
+        "manual_review_rate": 0.5
+      },
+      "sla_compliance": {
+        "pipeline_success": "PASSED"
+      },
+      "quality_assessment": {
+        "data_quality": "ACCEPTABLE"
+      },
+      "recommendations": []
+    },
+    "escalations": [
+      {
+        "claim_id": "CLM-GENAI-002",
+        "escalation_level": "MEDIUM",
+        "reasons": [
+          "Decision: APPROVE_WITH_REVIEW"
+        ],
+        "timestamp": "2026-07-02T11:06:29.688154",
+        "assigned_to": "Manual Review Queue"
+      }
+    ],
+    "conflicts": [],
+    "interventions": [],
+    "supervisor_recommendation": {
+      "status": "ESCALATION_THRESHOLD_EXCEEDED",
+      "primary_action": "Escalation count high - consider workflow optimization",
+      "timestamp": "2026-07-02T11:06:29.688165",
+      "requires_manual_intervention": true
+    }
+  },
+  "system_health": {
+    "report_timestamp": "2026-07-02T11:06:29.688264",
+    "system_health": {
+      "status": "HEALTHY",
+      "overall_success_rate": 1.0,
+      "batches_supervised": 1
+    },
+    "pipeline_metrics": {
+      "agent": "Orchestrator Agent",
+      "total_claims_processed": 3,
+      "successful": 3,
+      "failed": 0,
+      "success_rate": 1.0,
+      "stage_failures": {
+        "bronze": 0,
+        "silver": 0,
+        "gold": 0
+      },
+      "sub_agent_metrics": {
+        "bronze": {
+          "agent": "Bronze Agent",
+          "tier": "BRONZE",
+          "processed": 3,
+          "failed": 0,
+          "success_rate": 1.0
+        },
+        "silver": {
+          "agent": "Silver Agent",
+          "tier": "SILVER",
+          "processed": 3,
+          "failed": 0,
+          "success_rate": 1.0
+        },
+        "gold": {
+          "agent": "Gold Agent",
+          "tier": "GOLD",
+          "processed": 3,
+          "failed": 0,
+          "success_rate": 1.0
+        }
+      }
+    },
+    "oversight_summary": {
+      "total_escalations": 1,
+      "total_conflicts": 0,
+      "total_interventions": 0
+    },
+    "critical_issues": [],
+    "recommendations": [
+      "Review and optimize escalation thresholds",
+      "Continue monitoring SLA compliance"
+    ]
+  }
+}
