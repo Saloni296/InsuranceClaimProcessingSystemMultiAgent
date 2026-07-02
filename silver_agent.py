@@ -124,7 +124,7 @@ class SilverAgent:
                 'processing_timestamp': datetime.now().isoformat()
             })
             
-            print(f"✓ Silver enrichment PASSED")
+            print("[OK] Silver enrichment PASSED")
             print(f"  - Policy Verified: {policy_valid}")
             print(f"  - Network Status: {network_status}")
             print(f"  - Fraud Risk Score: {fraud_score:.2%}")
@@ -141,7 +141,7 @@ class SilverAgent:
             
         except Exception as e:
             self.failed_count += 1
-            print(f"✗ Silver enrichment FAILED: {str(e)}")
+            print(f"[FAIL] Silver enrichment FAILED: {str(e)}")
             
             return {
                 'success': False,

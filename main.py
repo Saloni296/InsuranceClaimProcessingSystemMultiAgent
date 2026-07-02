@@ -172,13 +172,13 @@ def print_health_report(health_report: dict) -> None:
     if health_report['critical_issues']:
         print("Critical Issues:")
         for issue in health_report['critical_issues']:
-            print(f"  ⚠ {issue}")
+            print(f"  - {issue}")
         print()
     
     if health_report['recommendations']:
         print("Recommendations:")
         for rec in health_report['recommendations']:
-            print(f"  → {rec}")
+            print(f"  - {rec}")
         print()
 
 
@@ -198,13 +198,22 @@ def main():
     supervisor_agent = SupervisorAgent(orchestrator_agent)
     print("[OK] All agents initialized\n")
     
-    # Load claims
-    claims_file = Path(__file__).parent / "sample_claims.json"
+    # Load claims (prefer GenAI sample if present)
+    claims_file = Path(__file__).parent / "sample_claims_genai.json"
     if not claims_file.exists():
-        print(f"✗ Claims file not found: {claims_file}")
+        claims_file = Path(__file__).parent / "sample_claims.json"
+    if not claims_file.exists():
+        print(f"[ERROR] Claims file not found: {claims_file}")
         sys.exit(1)
-    
-    claims = load_claims(str(claims_file))
+
+    # Support both formats: genai file is a list, legacy sample_claims.json has {'claims': [...]}
+    if claims_file.name == 'sample_claims_genai.json':
+        # Support BOM in JSON by using utf-8-sig
+        with open(claims_file, 'r', encoding='utf-8-sig') as f:
+            claims = json.load(f)
+    else:
+        claims = load_claims(str(claims_file))
+
     print(f"[OK] Loaded {len(claims)} claims from {claims_file.name}\n")
     
     # Process single claim (optional - for demo)

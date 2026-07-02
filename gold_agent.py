@@ -51,7 +51,7 @@ class GoldAgent:
         print(f"{'='*60}")
         
         if not silver_data.get('success'):
-            print(f"✗ Skipping - Silver enrichment failed")
+            print("[SKIP] Skipping - Silver enrichment failed")
             return {
                 'success': False,
                 'tier': self.tier,
@@ -103,7 +103,7 @@ class GoldAgent:
                 'processing_timestamp': datetime.now().isoformat()
             })
             
-            print(f"✓ Gold processing PASSED")
+            print("[OK] Gold processing PASSED")
             print(f"  - Decision: {decision['recommendation']}")
             print(f"  - Approved Amount: ${payment_details['approved_amount']:.2f}")
             print(f"  - Patient Responsibility: ${patient_resp['total_patient_pay']:.2f}")
@@ -118,7 +118,7 @@ class GoldAgent:
             
         except Exception as e:
             self.failed_count += 1
-            print(f"✗ Gold processing FAILED: {str(e)}")
+            print(f"[FAIL] Gold processing FAILED: {str(e)}")
             
             return {
                 'success': False,
